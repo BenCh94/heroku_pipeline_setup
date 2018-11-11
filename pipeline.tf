@@ -1,17 +1,18 @@
 # Configure heroku provider
 provider "heroku" {
-  email = "bchadwick94@gmail.com"
+  email = "${var.email}"
   api_key = "${var.heroku_api_key}"
-  app_name = "${var.app_name}"
 }
 
 # Create Heroku apps for staging and production
 resource "heroku_app" "staging" {
   name = "${var.app_name}-staging"
+  region = "us"
 }
 
 resource "heroku_app" "production" {
   name = "${var.app_name}-production"
+  region = "us"
 }
 
 # Create a Heroku pipeline
@@ -46,10 +47,10 @@ resource "heroku_addon" "staging_db" {
 # Create scheduler add ons for updating data
 resource "heroku_addon" "production_scheduler" {
 	app    = "${heroku_app.production.name}"
-	plan   = "heroku-scheduler:standard"
+	plan   = "scheduler:standard"
 }
 
 resource "heroku_addon" "staging_scheduler" {
 	app    = "${heroku_app.staging.name}"
-	plan   = "heroku-scheduler:standard"
+	plan   = "scheduler:standard"
 }
