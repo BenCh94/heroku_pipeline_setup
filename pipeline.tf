@@ -2,6 +2,7 @@
 provider "heroku" {
   email = "bchadwick94@gmail.com"
   api_key = "${var.heroku_api_key}"
+  app_name = "${var.app_name}"
 }
 
 # Create Heroku apps for staging and production
@@ -32,12 +33,12 @@ resource "heroku_pipeline_coupling" "production" {
 }
 
 # Create databases for apps
-resource "heroku_addon" "database" {
+resource "heroku_addon" "prod_db" {
 	app    = "${heroku_app.production.name}"
 	plan   = "heroku-postgresql:hobby-basic"
 }
 
-resource "heroku_addon" "database" {
+resource "heroku_addon" "staging_db" {
 	app    = "${heroku_app.staging.name}"
 	plan   = "heroku-postgresql:hobby-basic"
 }
